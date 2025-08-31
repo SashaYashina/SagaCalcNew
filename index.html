@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор возраста города</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #adb8eb;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            /* Стили для стрелочек */
+            -moz-appearance: textfield;
+        }
+        /* Убираем стандартные стрелки для WebKit браузеров */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Создаем свои стрелки */
+        .number-input {
+            position: relative;
+        }
+        .number-input button {
+            position: absolute;
+            right: 5px;
+            width: 30px;
+            height: 15px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .number-input button.increment {
+            top: 5px;
+            border-radius: 0 5px 0 0;
+        }
+        .number-input button.decrement {
+            top: 20px;
+            border-radius: 0 0 5px 0;
+        }
+        .number-input button:hover {
+            background: #e0e0e0;
+        }
+        button.calculate-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #0ABAB5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button.calculate-btn:hover {
+            background-color: #0a8581;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Городская Сага - калькулятор возраста</h1>
+
+    <div class="form-group">
+        <label for="baseYear">Введите год событий:</label>
+        <div class="number-input">
+            <input type="number" id="baseYear" value="2025" min="0" max="3000" placeholder="Например: 2025">
+            <button class="increment" onclick="changeYear(1)">▲</button>
+            <button class="decrement" onclick="changeYear(-1)">▼</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="k">Введите год основания города:</label>
+        <input type="number" id="k" placeholder="Например: 1990">
+    </div>
+
+    <button class="calculate-btn" onclick="calculateAge()">Высчитать возраст</button>
+
+    <div id="result" class="result">Вашему городу: </div>
+
+</div>
+
+
+<script>
+    // Установка текущего года по умолчанию
+    document.addEventListener('DOMContentLoaded', function() {
+        // Можно оставить 2025 как фиксированное значение
+        // Или установить текущий год автоматически:
+        // const currentYear = new Date().getFullYear();
+        // document.getElementById('baseYear').value = currentYear;
+    });
+
+    // Функция для изменения года стрелочками
+    function changeYear(delta) {
+        const baseYearInput = document.getElementById('baseYear');
+        let currentValue = parseInt(baseYearInput.value) || 2025;
+        baseYearInput.value = currentValue + delta;
+    }
+
+    // Функция расчета
+    function f(a, b, c, d) {
+        return (a - b) / c + d;
+    }
+
+    function calculateAge() {
+        const baseYear = parseInt(document.getElementById('baseYear').value);
+        const k = parseInt(document.getElementById('k').value);
+        const resultDiv = document.getElementById('result');
+
+        // Валидация
+        if (isNaN(baseYear) || isNaN(k)) {
+            resultDiv.textContent = 'Ошибка: Введите числа';
+            resultDiv.className = 'result error';
+            return;
+        }
+
+        if (baseYear < k) {
+            resultDiv.textContent = 'Ошибка: Год основания не может быть больше текущего года';
+            resultDiv.className = 'result error';
+            return;
+        }
+
+        const a = baseYear - k;
+        let s;
+
+        if (a < 48) {
+            s = f(a, 0, 4, 3);
+        } else if (a > 48 && a < 200) {
+            s = f(a, 48, 38, 16);
+        } else if (a > 200 && a < 500) {
+            s = f(a, 200, 60, 20);
+        } else if (a > 500 && a < 1000) {
+            s = f(a, 500, 100, 25);
+        } else if (a > 1000 && a < 2500) {
+            s = f(a, 1000, 150, 30);
+        } else if (a > 2500 && a < 3700) {
+            s = f(a, 2500, 120, 40);
+        } else if (a > 3700 && a < 5000) {
+            s = f(a, 3700, 130, 50);
+        } else {
+            s = 60;
+        }
+
+        resultDiv.textContent = `Вашему городу: ${s.toFixed(1)} лет`;
+        resultDiv.className = 'result';
+    }
+
+    // Добавляем обработчики для клавиатуры
+    document.getElementById('baseYear').addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowUp') {
+            changeYear(1);
+            e.preventDefault();
+        } else if (e.key === 'ArrowDown') {
+            changeYear(-1);
+            e.preventDefault();
+        }
+    });
+</script>
+</body>
+</html>
