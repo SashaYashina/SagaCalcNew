@@ -57,7 +57,7 @@
             width: 30px;
             height: 15px;
             border: none;
-            background: #f0f0f0;
+            background: #eb4c42;
             cursor: pointer;
             font-size: 12px;
             display: flex;
@@ -112,7 +112,7 @@
     <div class="form-group">
         <label for="baseYear">Введите год событий:</label>
         <div class="number-input">
-            <input type="number" id="baseYear" value="2025" min="0" max="3000" placeholder="Например: 2025">
+            <input type="number" id="baseYear" value="2025" min="-30000" max="30000" placeholder="Например: 2017">
             <button class="increment" onclick="changeYear(1)">▲</button>
             <button class="decrement" onclick="changeYear(-1)">▼</button>
         </div>
@@ -120,7 +120,7 @@
 
     <div class="form-group">
         <label for="k">Введите год основания города:</label>
-        <input type="number" id="k" placeholder="Например: 1990">
+        <input type="number" id="k" placeholder="Например: 1794">
     </div>
 
     <button class="calculate-btn" onclick="calculateAge()">Высчитать возраст</button>
@@ -172,25 +172,25 @@
         const a = baseYear - k;
         let s;
 
-        if (a < 48) {
+        if (a <= 48) {
             s = f(a, 0, 4, 3);
-        } else if (a > 48 && a < 200) {
+        } else if (a >= 48 && a < 200) {
             s = f(a, 48, 38, 16);
-        } else if (a > 200 && a < 500) {
+        } else if (a >= 200 && a < 500) {
             s = f(a, 200, 60, 20);
-        } else if (a > 500 && a < 1000) {
+        } else if (a >= 500 && a < 1000) {
             s = f(a, 500, 100, 25);
-        } else if (a > 1000 && a < 2500) {
+        } else if (a >= 1000 && a < 2500) {
             s = f(a, 1000, 150, 30);
-        } else if (a > 2500 && a < 3700) {
+        } else if (a >= 2500 && a < 3700) {
             s = f(a, 2500, 120, 40);
-        } else if (a > 3700 && a < 5000) {
+        } else if (a >= 3700 && a < 5000) {
             s = f(a, 3700, 130, 50);
         } else {
             s = 60;
         }
 
-        resultDiv.textContent = `Вашему городу: ${s.toFixed(1)} лет`;
+        resultDiv.textContent = `Вашему городу: ${s.toFixed(1)}`;
         resultDiv.className = 'result';
     }
 
